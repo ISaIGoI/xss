@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pepe Meme</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #2c3e50;
+            font-family: Impact, Arial Black, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        canvas {
+            border: 3px solid #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 100%;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #229954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="memeCanvas" width="500" height="500"></canvas>
+        <br>
+        <button onclick="downloadImage()">Download JPG</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('memeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Draw Pepe-style frog
+        function drawPepe() {
+            // Background
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, 500, 500);
+
+            // Frog body (green)
+            ctx.fillStyle = '#7cb342';
+            ctx.beginPath();
+            ctx.ellipse(250, 300, 150, 130, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Head
+            ctx.fillStyle = '#8bc34a';
+            ctx.beginPath();
+            ctx.ellipse(250, 180, 130, 110, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eyes (white part)
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.ellipse(210, 160, 45, 50, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(290, 160, 45, 50, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Pupils
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.ellipse(210, 170, 20, 25, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(290, 170, 20, 25, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Mouth - smirk
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(200, 230);
+            ctx.quadraticCurveTo(250, 250, 310, 230);
+            ctx.stroke();
+
+            // Arms
+            ctx.fillStyle = '#7cb342';
+            // Left arm
+            ctx.beginPath();
+            ctx.ellipse(130, 320, 30, 70, -0.3, 0, Math.PI * 2);
+            ctx.fill();
+            // Right arm
+            ctx.beginPath();
+            ctx.ellipse(370, 320, 30, 70, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Legs
+            // Left leg
+            ctx.beginPath();
+            ctx.ellipse(190, 420, 35, 60, 0, 0, Math.PI * 2);
+            ctx.fill();
+            // Right leg
+            ctx.beginPath();
+            ctx.ellipse(310, 420, 35, 60, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Draw text with outline
+        function drawMemeText() {
+            ctx.font = 'bold 56px Impact, Arial Black, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            
+            const text = 'MINGO IS BIG NOOB';
+            
+            // Multiple layers for better outline
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 8;
+            ctx.lineJoin = 'round';
+            ctx.miterLimit = 2;
+            
+            // Draw outline multiple times for thickness
+            for (let i = 0; i < 3; i++) {
+                ctx.strokeText(text, 250, 25);
+            }
+            
+            // White text
+            ctx.fillStyle = '#fff';
+            ctx.fillText(text, 250, 25);
+            
+            // Add subtle shadow for depth
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.fillText(text, 250, 25);
+            
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+        }
+
+        // Initialize
+        drawPepe();
+        drawMemeText();
+
+        // Download function
+        function downloadImage() {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'mingo_noob_meme.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/jpeg', 0.95);
+        }
+    </script>
+</body>
+</html>
